@@ -4,7 +4,20 @@ from datetime import datetime
 from datetime import date
 import time
 import json
+import threading
 from bs4 import BeautifulSoup
+
+def loading(stop):
+    signs=['\\','|','/','-']
+    while True:
+        if stop():
+            break
+        for sign in signs: 
+            print(sign,end="\r")
+            time.sleep(0.2)
+
+parsing_finnished=False
+t = threading.Thread(name='loading process', target=loading, args=(lambda : parsing_finnished, ))
 
 #list of data to be written into csv
 #children in json representet by '>'
@@ -17,7 +30,7 @@ PAGE_BASE = 'https://osu.ppy.sh/rankings/osu/performance'
 print('If you want to scrape the global rankings, enter "global".')
 print('If you want to scrape the rankings of a specific country, enter its country code.')
 print('global/xx')
-COUNTRY = 'DE'
+COUNTRY = input()
 
 if COUNTRY == 'global':
     PAGE_BASE = PAGE_BASE + '?page='
@@ -36,6 +49,8 @@ http = urllib3.PoolManager()
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)    
 
 CSV_FILE = 'osu_data_' + COUNTRY + "_" + str(date.today()) + ".csv"
+
+t.start()
 
 for i in range(1, MAX_PAGE + 1):
     # Save per page in case something happens
@@ -75,12 +90,10 @@ for i in range(1, MAX_PAGE + 1):
                 
             writer.writerow(user_row)
             time.sleep(1)
-        
+            
         print('processed page', i, ' time-taken: ',
               str(int((time.time() - start) / 60)) + ':' + str(int((time.time() - start) % 60)))
         page.close()
-
-
-
-
-
+parsing_finnished=True
+t.join()
+print('finnished with parsing {} players from {}'.format(MAX_PAGE*50,COUNTRY))
