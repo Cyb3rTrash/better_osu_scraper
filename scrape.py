@@ -60,7 +60,7 @@ t.start()
 
 for i in range(1, MAX_PAGE + 1):
     # Save per page in case something happens
-    with open(CSV_FILE, 'a', newline='') as csv_file: 
+    with open(CSV_FILE, 'a', newline='',encoding='utf-8') as csv_file: 
         writer = csv.writer(csv_file)
         if(i==1):
             writer.writerow(allFiltered)
@@ -95,7 +95,7 @@ for i in range(1, MAX_PAGE + 1):
 
                 
             writer.writerow(user_row)
-            time.sleep(0.5)
+            time.sleep(1)
             
         print('processed page', i, ' time-taken: ',
               str(int((time.time() - start) / 60)) + ':' + str(int((time.time() - start) % 60)))
