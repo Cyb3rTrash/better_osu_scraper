@@ -23,7 +23,7 @@ t = threading.Thread(name='loading process', target=loading, args=(lambda : pars
 #list of data to be written into csv
 #children in json representet by '>'
 allFiltered=['rank','name','accuracy','play count','pp','ss','s','a','play time','id','join date','playmode','location','interests','twitter','discord']
-filters=['>statistics>play_time','id','join_date','playmode','location','interests','skype','twitter','discord']
+filters=['>statistics>play_time','id','join_date','playmode','location','interests','twitter','discord']
 
 PAGE_BASE = 'https://osu.ppy.sh/rankings/osu/performance'
 
@@ -95,7 +95,7 @@ for i in range(1, MAX_PAGE + 1):
 
                 
             writer.writerow(user_row)
-            time.sleep(1)
+            time.sleep(0.5)
             
         print('processed page', i, ' time-taken: ',
               str(int((time.time() - start) / 60)) + ':' + str(int((time.time() - start) % 60)))
