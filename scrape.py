@@ -5,6 +5,7 @@ from datetime import date
 import time
 import json
 import threading
+import sys
 from bs4 import BeautifulSoup
 
 def loading(stop):
@@ -21,28 +22,33 @@ t = threading.Thread(name='loading process', target=loading, args=(lambda : pars
 
 #list of data to be written into csv
 #children in json representet by '>'
-allFiltered=['rank','name','accuracy','play count','pp','ss','s','a','play time','id','join date','playmode','location','interests','skype','twitter','discord']
+allFiltered=['rank','name','accuracy','play count','pp','ss','s','a','play time','id','join date','playmode','location','interests','twitter','discord']
 filters=['>statistics>play_time','id','join_date','playmode','location','interests','skype','twitter','discord']
 
 PAGE_BASE = 'https://osu.ppy.sh/rankings/osu/performance'
 
-# Check if user wants to scrape global rankings or country rankings
-print('If you want to scrape the global rankings, enter "global".')
-print('If you want to scrape the rankings of a specific country, enter its country code.')
-print('global/xx')
-COUNTRY = input()
+if(len(sys.argv)==3):
+    COUNTRY=sys.argv[1]
+    MAX_PAGE=int(sys.argv[2])
+else:
+    # Check if user wants to scrape global rankings or country rankings
+    print('If you want to scrape the global rankings, enter "global".')
+    print('If you want to scrape the rankings of a specific country, enter its country code.')
+    print('global/xx')
+    COUNTRY = input()
+
+    print('How many pages do you want to scrape?')
+    print('One page equals 50 users.')
+    MAX_PAGE = int(input())
+
+while MAX_PAGE > 200:
+    print('You can only scrape up to 200 pages.')
+    MAX_PAGE = int(input())
 
 if COUNTRY == 'global':
     PAGE_BASE = PAGE_BASE + '?page='
 else:
     PAGE_BASE = PAGE_BASE + '?country=' + COUNTRY + '&page='
-
-print('How many pages do you want to scrape?')
-print('One page equals 50 users.')
-MAX_PAGE = int(input())
-while MAX_PAGE > 200:
-    print('You can only scrape up to 200 pages.')
-    MAX_PAGE = int(input())
 
 http = urllib3.PoolManager()
 
