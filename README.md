@@ -3,7 +3,7 @@
 
 ## Usage
 
-python scrape.py <country code> <number of pages>
+python scrape.py \<country code> \<number of pages>
 
 example:   
 ```bash
