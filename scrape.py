@@ -21,7 +21,7 @@ parsing_finished=False
 t = threading.Thread(name='loading process', target=loading, args=(lambda : parsing_finished, ))
 
 #list of data to be written into csv
-#children in json representet by '>'
+#children in json represented by '>'
 allFiltered=['rank','name','accuracy','play count','pp','ss','s','a','play time','id','join date','playmode','location','interests','twitter','discord']
 filters=['>statistics>play_time','id','join_date','playmode','location','interests','twitter','discord']
 
