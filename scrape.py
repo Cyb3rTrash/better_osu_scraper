@@ -17,8 +17,8 @@ def loading(stop):
             print(sign,end="\r")
             time.sleep(0.2)
 
-parsing_finnished=False
-t = threading.Thread(name='loading process', target=loading, args=(lambda : parsing_finnished, ))
+parsing_finished=False
+t = threading.Thread(name='loading process', target=loading, args=(lambda : parsing_finished, ))
 
 #list of data to be written into csv
 #children in json representet by '>'
@@ -100,6 +100,6 @@ for i in range(1, MAX_PAGE + 1):
         print('processed page', i, ' time-taken: ',
               str(int((time.time() - start) / 60)) + ':' + str(int((time.time() - start) % 60)))
         page.close()
-parsing_finnished=True
+parsing_finished=True
 t.join()
-print('finnished with parsing {} players from {}'.format(MAX_PAGE*50,COUNTRY))
+print('finished with parsing {} players from {}'.format(MAX_PAGE*50,COUNTRY))
