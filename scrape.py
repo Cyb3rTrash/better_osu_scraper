@@ -8,7 +8,7 @@ import threading
 import sys
 from bs4 import BeautifulSoup
 
-def loading(stop):
+def spinner(stop):
     signs=['\\','|','/','-']
     while True:
         if stop():
@@ -18,7 +18,7 @@ def loading(stop):
             time.sleep(0.2)
 
 parsing_finished=False
-t = threading.Thread(name='loading process', target=loading, args=(lambda : parsing_finished, ))
+t = threading.Thread(name='loading process', target=spinner, args=(lambda : parsing_finished, ))
 
 #list of data to be written into csv
 #children in json represented by '>'
@@ -83,7 +83,7 @@ for current_row in range(1, MAX_PAGE + 1):
             profile = http.request('GET', user_profile_link)
             profile_parsed = BeautifulSoup(profile.data, 'html.parser')
             userJsonTag = profile_parsed.find_all("script",{'id':'json-user'})
-            
+
             #shit solution pls find better
             userString = str(userJsonTag[0]).split('>',1)[1].replace("</script>","")
             userJson = json.loads(userString)
@@ -94,10 +94,9 @@ for current_row in range(1, MAX_PAGE + 1):
                 else:
                     user_row.append(userJson[item])
 
-                
             writer.writerow(user_row)
             time.sleep(1)
-            
+
         print('processed page', current_row, ' time-taken: ',
               str(int((time.time() - start) / 60)) + ':' + str(int((time.time() - start) % 60)))
         page.close()
