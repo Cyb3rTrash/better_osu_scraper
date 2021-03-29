@@ -58,14 +58,14 @@ CSV_FILE = 'osu_data_' + COUNTRY + "_" + str(date.today()) + ".csv"
 
 t.start()
 
-for i in range(1, MAX_PAGE + 1):
+for current_row in range(1, MAX_PAGE + 1):
     # Save per page in case something happens
     with open(CSV_FILE, 'a', newline='',encoding='utf-8') as csv_file: 
         writer = csv.writer(csv_file)
-        if(i==1):
+        if(current_row==1):
             writer.writerow(allFiltered)
-        start = time.time() 
-        page = http.request('GET', PAGE_BASE + str(i))
+        start = time.time()
+        page = http.request('GET', PAGE_BASE + str(current_row))
         parsed_page = BeautifulSoup(page.data, 'html.parser')
         rows = parsed_page.find_all(
             'tr', attrs={'class': 'ranking-page-table__row'})
@@ -73,6 +73,7 @@ for i in range(1, MAX_PAGE + 1):
         for row in rows:
             cols = row.find_all('td', {'class': 'ranking-page-table__column'})
             links = cols[1].find_all('a', href=True)
+            #print(links)
             user_profile_link = links[1]['href'].strip()
             user_row = []
             
@@ -97,7 +98,7 @@ for i in range(1, MAX_PAGE + 1):
             writer.writerow(user_row)
             time.sleep(1)
             
-        print('processed page', i, ' time-taken: ',
+        print('processed page', current_row, ' time-taken: ',
               str(int((time.time() - start) / 60)) + ':' + str(int((time.time() - start) % 60)))
         page.close()
 parsing_finished=True
