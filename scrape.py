@@ -97,9 +97,10 @@ for current_row in range(1, MAX_PAGE + 1):
             writer.writerow(user_row)
             time.sleep(1)
 
-        print('processed page', current_row, ' time-taken: ',
-              str(int((time.time() - start) / 60)) + ':' + str(int((time.time() - start) % 60)))
+        time_taken = str(int((time.time() - start) / 60)) + ':' + str(int((time.time() - start) % 60))
+        print('processed page',current_row,'time taken:',time_taken)
         page.close()
+
 parsing_finished=True
 t.join()
 print('finished with parsing {} players from {}'.format(MAX_PAGE*50,COUNTRY))
