@@ -1,6 +1,5 @@
 import csv
 import urllib3
-from datetime import datetime
 from datetime import date
 import time
 import json
@@ -98,7 +97,7 @@ for current_row in range(1, MAX_PAGE + 1):
             time.sleep(1)
 
         time_taken = str(int((time.time() - start) / 60)) + ':' + str(int((time.time() - start) % 60))
-        print('processed page',current_row,'time taken:',time_taken)
+        print('processed page',current_row,'(',time_taken,')')
         page.close()
 
 parsing_finished=True
